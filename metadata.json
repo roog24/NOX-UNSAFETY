@@ -1,0 +1,8 @@
+{
+  "name": "NOX Website",
+  "description": "NOX band and Noise Lab character introduction website.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
