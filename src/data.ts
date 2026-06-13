@@ -112,7 +112,7 @@ export const characters: Character[] = [
       "반지하 자취중 🪟, 연애 안 함 ❌",
       "이성애자 👫"
     ],
-    bdsm: "서비스 탑&바닐라+정서적 교감+하드코어 플레이 비선호+남자와 경험 전무 🔞",
+    bdsm: "서비스 탑&바닐라+정서적 교감+하드코어 플레이 비선호+동정 🔞",
     color: "from-slate-600 to-slate-400",
     isNoxMember: true,
     imageUrl: "https://i.postimg.cc/43ZJPQ9k/25.png",

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Character } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Heart } from 'lucide-react';
+import { useAffinity } from '../context/AffinityContext';
 
 export function CharacterCard({ char, onClick }: { char: Character; onClick?: () => void; key?: string | number }) {
   return (
@@ -40,11 +41,13 @@ export function CharacterCard({ char, onClick }: { char: Character; onClick?: ()
 }
 
 export function CharacterProfileModal({ char, onClose }: { char: Character; onClose: () => void }) {
-  const [clickCount, setClickCount] = useState(0);
+  const { affinities, increaseAffinity } = useAffinity();
+  const clickCount = affinities[char.id] || 0;
+  
   const [hearts, setHearts] = useState<{ id: number; x: number; y: number }[]>([]);
   const [showBdsm, setShowBdsm] = useState(false);
   const [isBlackout, setIsBlackout] = useState(false);
-  const [showAltImage, setShowAltImage] = useState(false);
+  const [showAltImage, setShowAltImage] = useState(clickCount >= 100);
 
   const altImages: Record<string, string> = {
     eunhyuk: "https://i.postimg.cc/BvwdFwmR/39.png",
@@ -71,7 +74,7 @@ export function CharacterProfileModal({ char, onClose }: { char: Character; onCl
     setHearts((prev) => [...prev, newHeart]);
     
     const newCount = clickCount + 1;
-    setClickCount(newCount);
+    increaseAffinity(char.id);
 
     if (newCount === 100) {
       setIsBlackout(true);

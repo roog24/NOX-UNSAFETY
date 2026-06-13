@@ -4,11 +4,20 @@ import { Character } from '../types';
 import { Section, SectionTitle } from './Layout';
 import { CharacterCard, CharacterProfileModal } from './CharacterCard';
 import { AnimatePresence } from 'motion/react';
+import { useAffinity } from '../context/AffinityContext';
 
 export function Characters() {
   const noxMembers = characters.filter(c => c.isNoxMember);
   const studioMembers = characters.filter(c => !c.isNoxMember);
   const [selectedChar, setSelectedChar] = useState<Character | null>(null);
+  const { triggerEffect } = useAffinity();
+
+  const handleClose = () => {
+    if (selectedChar) {
+      triggerEffect(selectedChar.id);
+      setSelectedChar(null);
+    }
+  };
 
   return (
     <Section>
@@ -29,7 +38,7 @@ export function Characters() {
 
       <AnimatePresence>
         {selectedChar && (
-          <CharacterProfileModal char={selectedChar} onClose={() => setSelectedChar(null)} />
+          <CharacterProfileModal char={selectedChar} onClose={handleClose} />
         )}
       </AnimatePresence>
     </Section>
