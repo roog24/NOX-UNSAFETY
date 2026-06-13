@@ -259,20 +259,20 @@ export function FanCommunity() {
                               </div>
                             ))}
 
-                            <div className="mt-6 flex gap-3">
-                              <div className="w-8 h-8 rounded-full bg-fuchsia-900/20 border border-fuchsia-500/30 flex-shrink-0" />
-                              <div className="flex-1 flex gap-2">
+                            <div className="mt-6 flex gap-2 md:gap-3">
+                              <div className="hidden sm:block w-8 h-8 rounded-full bg-fuchsia-900/20 border border-fuchsia-500/30 flex-shrink-0" />
+                              <div className="flex-1 flex gap-2 min-w-0">
                                 <input
                                   type="text"
                                   placeholder="익명으로 망상 하나 보태기..."
                                   value={newComments[post.id] || ""}
                                   onChange={(e) => setNewComments(prev => ({ ...prev, [post.id]: e.target.value }))}
                                   onKeyDown={(e) => e.key === 'Enter' && handleAddComment(post.id)}
-                                  className="flex-1 bg-zinc-900/50 border border-zinc-800 rounded-lg px-4 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-fuchsia-500/50 focus:ring-1 focus:ring-fuchsia-500/50 transition-all h-10"
+                                  className="flex-1 min-w-0 bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-fuchsia-500/50 focus:ring-1 focus:ring-fuchsia-500/50 transition-all h-10"
                                 />
                                 <button
                                   onClick={() => handleAddComment(post.id)}
-                                  className="h-10 px-4 rounded-lg bg-zinc-100 text-black flex items-center justify-center hover:bg-white transition-colors"
+                                  className="shrink-0 h-10 px-4 rounded-lg bg-zinc-100 text-black flex items-center justify-center hover:bg-white transition-colors"
                                 >
                                   <Send className="w-4 h-4" />
                                 </button>
