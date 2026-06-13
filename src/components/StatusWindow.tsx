@@ -1263,10 +1263,10 @@ Bpm 85 정도로 잔잔하게.
                           <div className="flex flex-col gap-1 items-start max-w-[70%]">
                             <span className="text-xs text-[#371D1E] opacity-80">한서우</span>
                             <div className="flex items-end gap-1.5">
-                              <div className="bg-white text-[#371D1E] rounded-xl rounded-tl-sm px-3 py-2 text-[13px] shadow-sm">은호야 오늘 안 와?</div>
+                              <div className="bg-white text-[#371D1E] rounded-xl rounded-tl-sm px-3 py-2 text-[13px] shadow-sm">은호 형 오늘 안 와?</div>
                             </div>
                             <div className="flex items-end gap-1.5 mt-1">
-                              <div className="bg-white text-[#371D1E] rounded-xl rounded-tl-sm px-3 py-2 text-[13px] shadow-sm">나 지금 혼자 있는데. 네로도 너 보고 싶대.</div>
+                              <div className="bg-white text-[#371D1E] rounded-xl rounded-tl-sm px-3 py-2 text-[13px] shadow-sm">나 지금 혼자 있는데. 네로도 형 보고 싶대.</div>
                               <span className="text-[10px] text-[#371D1E]/60 mb-0.5 shrink-0">오후 8:40</span>
                             </div>
                           </div>
@@ -1304,10 +1304,10 @@ Bpm 85 정도로 잔잔하게.
                           <div className="flex flex-col gap-1 items-start max-w-[70%]">
                             <span className="text-xs text-[#371D1E] opacity-80">한서우</span>
                             <div className="flex items-end gap-1.5">
-                              <div className="bg-white text-[#371D1E] rounded-xl rounded-tl-sm px-3 py-2 text-[13px] shadow-sm">은호야</div>
+                              <div className="bg-white text-[#371D1E] rounded-xl rounded-tl-sm px-3 py-2 text-[13px] shadow-sm">은호 형</div>
                             </div>
                             <div className="flex items-end gap-1.5 mt-1">
-                              <div className="bg-white text-[#371D1E] rounded-xl rounded-tl-sm px-3 py-2 text-[13px] shadow-sm">어디야? 나 지금 네 자취방 앞인데.</div>
+                              <div className="bg-white text-[#371D1E] rounded-xl rounded-tl-sm px-3 py-2 text-[13px] shadow-sm">어디야? 나 지금 형 자취방 앞인데.</div>
                             </div>
                             <div className="flex items-end gap-1.5 mt-1">
                               <div className="bg-white text-[#371D1E] rounded-xl rounded-tl-sm px-3 py-2 text-[13px] shadow-sm">문 좀 열어주면 안 돼? 보고 싶어...</div>
