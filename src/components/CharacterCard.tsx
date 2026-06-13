@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Character } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Heart } from 'lucide-react';
@@ -54,6 +54,13 @@ export function CharacterProfileModal({ char, onClose }: { char: Character; onCl
     jiho: "https://i.postimg.cc/Y28QxK6R/43.png",
     jaehyun: "https://i.postimg.cc/bJVNsTnr/44.png",
   };
+
+  useEffect(() => {
+    if (altImages[char.id]) {
+      const img = new Image();
+      img.src = altImages[char.id];
+    }
+  }, [char.id]);
 
   const handleImageClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();

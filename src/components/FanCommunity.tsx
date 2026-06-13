@@ -179,7 +179,8 @@ export function FanCommunity() {
               SECRET LOUNGE
             </h2>
             <p className="mt-4 text-zinc-400 font-mono text-sm max-w-xl leading-relaxed">
-              팬들만의 은밀한 익명 커뮤니티 공간. (⚠️ 과몰입 및 뇌피셜 주의)
+              팬들만의 은밀한 익명 커뮤니티 공간.<br />
+              (⚠️ 과몰입 및 뇌피셜 주의)
             </p>
           </div>
           <div className="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 group-hover:bg-fuchsia-900/20 group-hover:text-fuchsia-400 group-hover:border-fuchsia-500/30 transition-all">
