@@ -2047,7 +2047,7 @@ Bpm 85 정도로 잔잔하게.
                                </div>
                                <div>
                                  <p className="font-semibold text-sm text-gray-900">도예 공방 체험</p>
-                                 <p className="text-xs text-gray-500">with 서지호</p>
+                                 <p className="text-xs text-gray-500">with 최지호</p>
                                </div>
                             </div>
                             <span className="text-[10px] font-semibold px-2 py-1 bg-amber-50 text-amber-600 border border-amber-100 rounded">D-1</span>

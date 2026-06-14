@@ -146,7 +146,7 @@ export const photos: Photo[] = [
   {
     id: "p24", charId: "eunho",
     url: "https://i.postimg.cc/dtTjt7Kh/33.png",
-    caption: "아메리카노의 쓴맛을 알아버린 한서우 (21세, 기타리스트) ㅋㅋㅋㅋ 인상 펴라 애기야 ☕️🤢",
+    caption: "아메리카노의 쓴맛을 알아버린 한서우 (21세) ㅋㅋㅋㅋ 인상 펴라 애기야 ☕️🤢",
     likes: 4700,
     comments: [
       { user: "eunhyuk_nox", text: "왜 애를 괴롭혀" },
