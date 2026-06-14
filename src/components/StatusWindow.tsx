@@ -43,6 +43,7 @@ const characterWallpapers: Record<string, string> = {
 
 function StatusWindow({ onClose, isAmber }: { onClose: () => void, isAmber: boolean }) {
   const [isAppOpen, setIsAppOpen] = useState(false);
+  const [homePage, setHomePage] = useState(0);
   const [isMemoOpen, setIsMemoOpen] = useState(false);
   const [currentMemo, setCurrentMemo] = useState<number | null>(null);
   const [isRecorderOpen, setIsRecorderOpen] = useState(false);
@@ -61,6 +62,7 @@ function StatusWindow({ onClose, isAmber }: { onClose: () => void, isAmber: bool
   const [currentChat, setCurrentChat] = useState<string | null>(null);
   const [sleepTab, setSleepTab] = useState<'work' | 'personal'>('work');
   const [habitPage, setHabitPage] = useState(0);
+  const constraintsRef = React.useRef<HTMLDivElement>(null);
   const { affinities, activeEffect } = useAffinity();
   const [time, setTime] = useState('');
   
@@ -96,6 +98,13 @@ function StatusWindow({ onClose, isAmber }: { onClose: () => void, isAmber: bool
       return () => observer.disconnect();
     }
   }, [jihoAffinity, isAppOpen]);
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
 
   useEffect(() => {
     const updateTime = () => {
@@ -154,10 +163,16 @@ function StatusWindow({ onClose, isAmber }: { onClose: () => void, isAmber: bool
             </div>
           )}
 
+        </div>
+
+
+
+        {/* Floating Chibis */}
+        <div className="absolute inset-0 z-[15] pointer-events-none overflow-hidden" ref={constraintsRef}>
           {maxAffinityChars.map((char, index) => (
             <motion.div 
               key={char.id}
-              className="absolute w-28 h-28 bg-contain bg-center bg-no-repeat cursor-grab active:cursor-grabbing z-10"
+              className="absolute w-28 h-28 bg-contain bg-center bg-no-repeat cursor-grab active:cursor-grabbing pointer-events-auto"
               style={{ 
                 backgroundImage: `url("${characterWallpapers[char.id]}")`,
                 left: `${15 + (index * 35) % 50}%`,
@@ -165,20 +180,20 @@ function StatusWindow({ onClose, isAmber }: { onClose: () => void, isAmber: bool
                 filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.4))'
               }}
               animate={{
-                x: [0, index % 2 === 0 ? 30 : -30, index % 3 === 0 ? -20 : 20, 0],
-                y: [0, index % 2 === 0 ? -30 : 30, index % 3 === 0 ? 20 : -20, 0],
                 rotate: [0, index % 2 === 0 ? 6 : -6, index % 3 === 0 ? -4 : 4, 0]
               }}
               transition={{
-                duration: 15 + index * 2,
+                duration: 6 + index,
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
               drag
-              dragConstraints={{ left: -100, right: 100, top: -200, bottom: 200 }}
-              dragElastic={0.2}
-              whileDrag={{ scale: 1.15, zIndex: 20, filter: 'drop-shadow(0 12px 20px rgba(0,0,0,0.5))' }}
-              whileTap={{ scale: 0.9, rotate: index % 2 === 0 ? 15 : -15 }}
+              dragConstraints={constraintsRef}
+              dragElastic={0}
+              dragMomentum={true}
+              whileDrag={{ scale: 1.15, zIndex: 50, filter: 'drop-shadow(0 12px 20px rgba(0,0,0,0.5))' }}
+              whileTap={{ scale: 0.9 }}
+              onDragStart={(e) => { e.stopPropagation(); }}
             />
           ))}
         </div>
@@ -190,14 +205,58 @@ function StatusWindow({ onClose, isAmber }: { onClose: () => void, isAmber: bool
                initial={{ opacity: 0, scale: 0.95 }}
                animate={{ opacity: 1, scale: 1 }}
                exit={{ opacity: 0, scale: 0.95 }}
-               className="absolute inset-0 z-10 p-6 pt-12 flex flex-col pointer-events-none"
+               className="absolute inset-0 z-10 pt-12 flex flex-col pointer-events-none"
             >
                {activeEffect !== 'hyungwon' && (
-                 <button onClick={onClose} className="absolute top-2 right-4 p-1.5 rounded-full bg-black/40 text-white/70 hover:bg-black/60 hover:text-white backdrop-blur-md pointer-events-auto">
+                 <button onClick={onClose} className="absolute top-2 right-4 z-20 p-1.5 rounded-full bg-black/40 text-white/70 hover:bg-black/60 hover:text-white backdrop-blur-md pointer-events-auto">
                    <X className="w-4 h-4" />
                  </button>
                )}
-               <div className="flex gap-6 flex-wrap pointer-events-auto">
+               <div className="flex-1 w-full overflow-hidden pointer-events-none pb-8 relative">
+                 <div
+                   id="homescreen-scroll"
+                   className="w-full h-full flex overflow-x-auto snap-x snap-mandatory scrollbar-none pointer-events-auto scroll-smooth select-none cursor-grab active:cursor-grabbing"
+                   onScroll={(e) => {
+                     const scrollLeft = e.currentTarget.scrollLeft;
+                     const width = e.currentTarget.clientWidth;
+                     setHomePage(Math.round(scrollLeft / width));
+                   }}
+                   onPointerDown={(e) => {
+                     if (e.pointerType !== 'mouse') return;
+                     const el = e.currentTarget;
+                     el.dataset.isDown = 'true';
+                     el.dataset.startX = (e.pageX - el.offsetLeft).toString();
+                     el.dataset.scrollLeft = el.scrollLeft.toString();
+                     el.style.scrollBehavior = 'auto'; // disable smooth snap while dragging
+                     el.style.scrollSnapType = 'none';
+                   }}
+                   onPointerLeave={(e) => {
+                     if (e.pointerType !== 'mouse') return;
+                     const el = e.currentTarget;
+                     el.dataset.isDown = 'false';
+                     el.style.scrollBehavior = 'smooth';
+                     el.style.scrollSnapType = 'x mandatory';
+                   }}
+                   onPointerUp={(e) => {
+                     if (e.pointerType !== 'mouse') return;
+                     const el = e.currentTarget;
+                     el.dataset.isDown = 'false';
+                     el.style.scrollBehavior = 'smooth';
+                     el.style.scrollSnapType = 'x mandatory';
+                   }}
+                   onPointerMove={(e) => {
+                     if (e.pointerType !== 'mouse') return;
+                     const el = e.currentTarget;
+                     if (el.dataset.isDown !== 'true') return;
+                     e.preventDefault();
+                     const x = e.pageX - el.offsetLeft;
+                     const startX = parseFloat(el.dataset.startX || '0');
+                     const scrollLeft = parseFloat(el.dataset.scrollLeft || '0');
+                     const walk = (x - startX) * 1.5;
+                     el.scrollLeft = scrollLeft - walk;
+                   }}
+                 >
+                   <div className="min-w-full h-full snap-start px-6 flex gap-6 flex-wrap content-start items-start pt-2">
                  {maxAffinityChars.length >= characters.length && (
                    <button 
                       onClick={() => setIsMessageOpen(true)}
@@ -304,6 +363,26 @@ function StatusWindow({ onClose, isAmber }: { onClose: () => void, isAmber: bool
                      <span className="text-[10px] text-white bg-black/40 px-1.5 rounded-[4px] backdrop-blur-sm shadow-sm font-medium">Talk</span>
                    </button>
                  )}
+                   </div>
+                   <div className="min-w-full h-full snap-start px-6 flex items-center justify-center">
+                     {/* Empty Page */}
+                   </div>
+                 </div>
+               </div>
+               
+               <div className="absolute bottom-10 left-0 right-0 flex justify-center gap-2 z-20 pointer-events-auto">
+                 {[0, 1].map(page => (
+                   <button 
+                     key={page} 
+                     onClick={() => {
+                       const el = document.getElementById('homescreen-scroll');
+                       if (el) {
+                         el.scrollTo({ left: page * el.clientWidth, behavior: 'smooth' });
+                       }
+                     }} 
+                     className={`w-2 h-2 rounded-full transition-colors ${homePage === page ? 'bg-white' : 'bg-white/30'}`} 
+                   />
+                 ))}
                </div>
             </motion.div>
           )}
@@ -365,11 +444,12 @@ function StatusWindow({ onClose, isAmber }: { onClose: () => void, isAmber: bool
                   </div>
                 </div>
               ) : (
-                <div className="flex-1 overflow-y-auto p-5 scrollbar-none pb-12 relative" style={{ backgroundImage: 'linear-gradient(transparent 95%, #fcd34d 95%)', backgroundSize: '100% 28px', lineHeight: '28px' }}>
+                <div className="flex-1 overflow-y-auto scrollbar-none relative">
+                  <div className="min-h-full min-w-full pt-[28px] px-5 pb-12" style={{ backgroundImage: 'linear-gradient(transparent 27px, #fcd34d 27px)', backgroundSize: '100% 28px', backgroundPosition: '0 0', backgroundRepeat: 'repeat-y', lineHeight: '28px' }}>
                   {currentMemo === 1 && (
                     <>
-                      <div className="font-bold text-xl mb-4 pt-1 text-zinc-800">별 먼지 - draft_1</div>
-                      <div className="text-zinc-700 italic font-[400] whitespace-pre-wrap">
+                      <div className="font-bold text-xl text-zinc-800 leading-[28px] mb-[28px]">별 먼지 - draft_1</div>
+                      <div className="text-zinc-700 italic font-[400] whitespace-pre-wrap leading-[28px]">
 {`어두운 밤하늘에 잠시 빛났던
 너라는 별을 잡으려 했지만
 손끝에 닿은 건 
@@ -394,8 +474,8 @@ function StatusWindow({ onClose, isAmber }: { onClose: () => void, isAmber: bool
                   )}
                   {currentMemo === 2 && (
                     <>
-                      <div className="font-bold text-xl mb-4 pt-1 text-zinc-800">무제_작곡중</div>
-                      <div className="text-zinc-700 italic font-[400] whitespace-pre-wrap">
+                      <div className="font-bold text-xl text-zinc-800 leading-[28px] mb-[28px]">무제_작곡중</div>
+                      <div className="text-zinc-700 italic font-[400] whitespace-pre-wrap leading-[28px]">
 {`차가운 비가 내리던 날,
 너의 우산이 되어주고 싶었어
 
@@ -410,8 +490,8 @@ Bpm 85 정도로 잔잔하게.
                   )}
                   {currentMemo === 3 && (
                     <>
-                      <div className="font-bold text-xl mb-4 pt-1 text-zinc-800">혼란스러운 밤</div>
-                      <div className="text-zinc-700 italic font-[400] whitespace-pre-wrap">
+                      <div className="font-bold text-xl text-zinc-800 leading-[28px] mb-[28px]">혼란스러운 밤</div>
+                      <div className="text-zinc-700 italic font-[400] whitespace-pre-wrap leading-[28px]">
 {`불규칙한 박자처럼 흔들리는 내 마음
 정해진 리듬을 벗어나 자꾸만 엇갈려
 우연히 마주친 시선에 코드가 뒤엉켜버리고
@@ -432,8 +512,8 @@ Bpm 85 정도로 잔잔하게.
                   )}
                   {currentMemo === 4 && (
                     <>
-                      <div className="font-bold text-xl mb-4 pt-1 text-zinc-800">(제목 미정 - 록 발라드)</div>
-                      <div className="text-zinc-700 italic font-[400] whitespace-pre-wrap">
+                      <div className="font-bold text-xl text-zinc-800 leading-[28px] mb-[28px]">(제목 미정 - 록 발라드)</div>
+                      <div className="text-zinc-700 italic font-[400] whitespace-pre-wrap leading-[28px]">
 {`깨져버린 거울 속에 비친 내 모습
 어디로 가야 할지 길을 잃었어
 소리 질러봐도 메아리만 돌아올 뿐
@@ -443,6 +523,7 @@ Bpm 85 정도로 잔잔하게.
                       </div>
                     </>
                   )}
+                  </div>
                 </div>
               )}
             </motion.div>
