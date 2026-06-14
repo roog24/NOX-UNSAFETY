@@ -90,7 +90,7 @@ export const characters: Character[] = [
       "단독 주택 자취중 🏡, 집이 잘 삼 (티내진 않음) 💰",
       "양성애자 🏳️‍🌈"
     ],
-    bdsm: "도미넌트&디그레이더+관음증+감각 차단+방치플 🔞",
+    bdsm: "도미넌트&디그레이더+관음증+감각 차단+방치플+바텀 경험 전무 🔞",
     color: "from-red-700 to-red-500",
     isNoxMember: true,
     imageUrl: "https://i.postimg.cc/BZwn3FdK/24.png",
